@@ -12,73 +12,73 @@
 
 <body>
     <script>
-//       webix.ui({
-//             view: "daterangepicker",
-//             id: "myDateRange",
-//             name: "custom",
-//             label: "Custom",
-//             suggest: {
-//                 view: "daterangesuggest",
-//                 body: {
-//                     calendarCount: 2,
-//                 },
-//                 on: {
-//                      onShow(){
-//                         if (webix.env.mobile && webix.env.touch){
-//                             const documentWidth = document.body.clientWidth;
-//                             if (parseInt(this.$view.style.width) >= documentWidth) {
-//                                 this.$view.style.width = `${documentWidth}px`;
-//                                 this.setPosition(0, parseInt(this.$view.style.top));
-//                                 this.$view.querySelector('.webix_win_body').style.overflowX = 'scroll';
-//                             }
-//                         }   
-//                     }
-//                 }
-//             }
-//         });
-        webix.protoUI({
-  name:"scrollableSuggest",
-  defaults: {
-    type:"scrollview",
-    fitMaster: true,
-    body: {
-      view: "scrollview", 
-      scroll :"x",
-      body: {
-        view:"daterange", icons:true, button:true, borderless:true,
-        width: 500,
-      }
-    }
-  },
-  $init(){    
-    this.$ready.push(() => {
-      const button = this.getButton();
-      if (button.attachEvent){
-        button.attachEvent("onItemClick", () => {
-          this.hide()
-        })
-      }
-    })
-  },
-  getRange(){
-    // get body of popup => get body of scrollview
-    return this.getBody().getBody();
-  },
-  getButton(){
-    // button or spacer (if "button" set to false)
-    return this.getRange().getChildViews()[1].getChildViews()[1];
-  },
-}, webix.ui.daterangesuggest)
+      webix.ui({
+            view: "daterangepicker",
+            id: "myDateRange",
+            name: "custom",
+            label: "Custom",
+            suggest: {
+                view: "daterangesuggest",
+                body: {
+                    calendarCount: 2,
+                },
+                on: {
+                     onShow(){
+                        if (webix.env.mobile && webix.env.touch){
+                            const documentWidth = document.body.clientWidth;
+                            if (parseInt(this.$view.style.width) >= documentWidth) {
+                                this.$view.style.width = `${documentWidth}px`;
+                                this.setPosition(0, parseInt(this.$view.style.top));
+                                this.$view.querySelector('.webix_win_body').style.overflowX = 'scroll';
+                            }
+                        }   
+                    }
+                }
+            }
+        });
+//         webix.protoUI({
+//   name:"scrollableSuggest",
+//   defaults: {
+//     type:"scrollview",
+//     fitMaster: true,
+//     body: {
+//       view: "scrollview", 
+//       scroll :"x",
+//       body: {
+//         view:"daterange", icons:true, button:true, borderless:true,
+//         width: 500,
+//       }
+//     }
+//   },
+//   $init(){    
+//     this.$ready.push(() => {
+//       const button = this.getButton();
+//       if (button.attachEvent){
+//         button.attachEvent("onItemClick", () => {
+//           this.hide()
+//         })
+//       }
+//     })
+//   },
+//   getRange(){
+//     // get body of popup => get body of scrollview
+//     return this.getBody().getBody();
+//   },
+//   getButton(){
+//     // button or spacer (if "button" set to false)
+//     return this.getRange().getChildViews()[1].getChildViews()[1];
+//   },
+// }, webix.ui.daterangesuggest)
 
-webix.ui({
-  view: "daterangepicker",
-  id: "myDateRange",
-  name: "custom",
-  label: "Custom",
-  suggest: {
-    view: "scrollableSuggest",
-  }
-});
+// webix.ui({
+//   view: "daterangepicker",
+//   id: "myDateRange",
+//   name: "custom",
+//   label: "Custom",
+//   suggest: {
+//     view: "scrollableSuggest",
+//   }
+// });
 
     </script>
 </body>
