@@ -12,11 +12,29 @@
 
 <body>
     <script>
-        webix.ui({
+      webix.ui({
             view: "daterangepicker",
-            name: "default",
-            label: "Default",
-            value: { start: new Date(), end: webix.Date.add(new Date(), 1, "month") }
+            id: "myDateRange",
+            name: "custom",
+            label: "Custom",
+            suggest: {
+                view: "daterangesuggest",
+                body: {
+                    calendarCount: 2,
+                },
+                on: {
+                    onShow(){
+                        if (webix.env.mobile && webix.env.touch){
+                            const documentWidth = document.body.clientWidth;
+                            if (parseInt(this.$view.style.width) > documentWidth) {
+                                this.$view.style.width = `${documentWidth}px`;
+                                this.$view.style.left = 0;
+                                this.$view.querySelector('.webix_win_body').style.overflowX = 'scroll';
+                            }
+                        }   
+                    }
+                }
+            }
         });
     </script>
 </body>
