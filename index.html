@@ -12,30 +12,49 @@
 
 <body>
     <script>
-      webix.ui({
-            view: "daterangepicker",
-            id: "myDateRange",
-            name: "custom",
-            label: "Custom",
-            suggest: {
-                view: "daterangesuggest",
-                body: {
-                    calendarCount: 2,
-                },
-                on: {
-                     onShow(){
-                        if (webix.env.mobile && webix.env.touch){
-                            const documentWidth = document.body.clientWidth;
-                            if (parseInt(this.$view.style.width) >= documentWidth) {
-                                this.$view.style.width = `${documentWidth}px`;
-                                this.setPosition(0, parseInt(this.$view.style.top));
-                                this.$view.querySelector('.webix_win_body').style.overflowX = 'scroll';
-                            }
-                        }   
-                    }
-                }
-            }
-        });
+    webix.ui({
+        view: "daterangepicker",
+        id: "myPicker",
+        name: "custom",
+        label: "Custom"
+    });
+
+    const dateRange = $$('myPicker').getPopup();
+    //Please notice, that we've replaced arrow function.
+    dateRange.attachEvent('onShow', function() {
+    if (webix.env.mobile && webix.env.touch) {
+    const documentWidth = document.body.clientWidth;
+    if (parseInt(this.$view.style.width) >= documentWidth) {
+          this.$view.style.width = `${documentWidth}px`;
+          this.setPosition(0, parseInt(this.$view.style.top));
+          this.$view.querySelector('.webix_win_body').style.overflowX = 'scroll';
+        }
+    }
+    });
+//       webix.ui({
+//             view: "daterangepicker",
+//             id: "myDateRange",
+//             name: "custom",
+//             label: "Custom",
+//             suggest: {
+//                 view: "daterangesuggest",
+//                 body: {
+//                     calendarCount: 2,
+//                 },
+//                 on: {
+//                      onShow(){
+//                         if (webix.env.mobile && webix.env.touch){
+//                             const documentWidth = document.body.clientWidth;
+//                             if (parseInt(this.$view.style.width) >= documentWidth) {
+//                                 this.$view.style.width = `${documentWidth}px`;
+//                                 this.setPosition(0, parseInt(this.$view.style.top));
+//                                 this.$view.querySelector('.webix_win_body').style.overflowX = 'scroll';
+//                             }
+//                         }   
+//                     }
+//                 }
+//             }
+//         });
 //         webix.protoUI({
 //   name:"scrollableSuggest",
 //   defaults: {
