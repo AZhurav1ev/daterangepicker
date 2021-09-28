@@ -13,29 +13,6 @@
 
 <body>
     <script>
-        function img(obj) {
-            return '<img src="' + obj.src + '" class="content" ondragstart="return false"/><div class="title">' + obj.title + '</div>'
-        }
-
-        var images = [
-            { id: 1, src: "https://pbs.twimg.com/media/CiKUOLOWsAADlj1.jpg:large", title: "Image 1" },
-            { id: 2, src: "//docs.webix.com/samples/26_carousel/imgs/image002.jpg", title: "Image 2" },
-            { id: 3, src: "//docs.webix.com/samples/26_carousel/imgs/image003.jpg", title: "Image 3" },
-            { id: 4, src: "//docs.webix.com/samples/26_carousel/imgs/image004.jpg", title: "Image 4" },
-            { id: 5, src: "//docs.webix.com/samples/26_carousel/imgs/image005.jpg", title: "Image 5" },
-            { id: 6, src: "//docs.webix.com/samples/26_carousel/imgs/image006.jpg", title: "Image 6" }
-        ];
-        var viewsArray = [];
-        for (var i = 0; i < images.length; i++) {
-            viewsArray.push({
-                id: images[i].id,
-                css: "image",
-                template: img,
-                data: webix.copy(images[i])
-            });
-        }
-        console.log(viewsArray)
-
         webix.ui({
             view: "scrollview",
             id: "scrollview",
