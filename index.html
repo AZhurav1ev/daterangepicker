@@ -13,6 +13,10 @@
 
 <body>
     <script>
+          function img(obj) {
+            return '<img src="' + obj.src + '" class="content" ondragstart="return false"/><div class="title">' + obj.title + '</div>'
+        }
+        
         webix.ui({
             view: "scrollview",
             id: "scrollview",
