@@ -45,27 +45,27 @@
                                 this.$view.style.top = `${window.innerHeight - this.$height}.px`;
                                 const self = this;
 
-                                // $$("scrollview").$view.addEventListener('scroll', function (e) {
-                                //     const { x, y } = $$("scrollview").getScrollState();
-                                //     const height = window.innerHeight - self.$height + y;
-                                //     self.$view.style.top = `${height}px`
-                                // })
+                                $$("scrollview").$view.addEventListener('scroll', function (e) {
+                                    const { x, y } = $$("scrollview").getScrollState();
+                                    const height = window.innerHeight - self.$height + y;
+                                    self.$view.style.top = `${height}px`
+                                })
                             }
                         }
                     }
                 ]
             },
-            on: {
-                onAfterScroll() {
-                    const { x, y } = this.getScrollState();
-                    y > this.config.scrollState ? $$('footer').hide() : $$('footer').show();
-                    if ($$('footer').isVisible()) {
-                        const height = window.innerHeight - $$('footer').$height + y;
-                        $$('footer').$view.style.top = `${height}px`
-                    }
-                    this.config.scrollState = y
-                }
-            }
+            // on: {
+            //     onAfterScroll() {
+            //         const { x, y } = this.getScrollState();
+            //         y > this.config.scrollState ? $$('footer').hide() : $$('footer').show();
+            //         if ($$('footer').isVisible()) {
+            //             const height = window.innerHeight - $$('footer').$height + y;
+            //             $$('footer').$view.style.top = `${height}px`
+            //         }
+            //         this.config.scrollState = y
+            //     }
+            // }
         });
     </script>
 </body>
