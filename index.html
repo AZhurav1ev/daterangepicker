@@ -5,18 +5,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./codebase/webix705.min.js"></script>
-    <link rel="stylesheet" href="./codebase/webix705.min.css">
+    <script src="./codebase/webix715.min.js"></script>
+    <link rel="stylesheet" href="./codebase/webix715.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <title>Document</title>
-
 </head>
 
 <body>
+    <script src="./data.js"></script>
     <script>
-          function img(obj) {
-            return '<img src="' + obj.src + '" class="content" ondragstart="return false"/><div class="title">' + obj.title + '</div>'
-        }
-        
         webix.ui({
             view: "scrollview",
             id: "scrollview",
@@ -27,28 +25,54 @@
                     { template: "<h1>header</h1>", autoheight: true },
                     { template: "<h1>navigation</h1>", autoheight: true },
                     {
-                        view: "carousel",
-                        id: "carousel",
-                        height: 300,
-                        cols: [
-                            { css: "image", template: img, data: { src: "http://docs.webix.com/samples/26_carousel/imgs/image001.jpg" } },
-                            { css: "image", template: img, data: { src: "http://docs.webix.com/samples/26_carousel/imgs/image002.jpg" } },
-                            { css: "image", template: img, data: { src: "http://docs.webix.com/samples/26_carousel/imgs/image003.jpg" } },
-                            { css: "image", template: img, data: { src: "http://docs.webix.com/samples/26_carousel/imgs/image004.jpg" } },
-                            { css: "image", template: img, data: { src: "http://docs.webix.com/samples/26_carousel/imgs/image005.jpg" } },
-                            { css: "image", template: img, data: { src: "http://docs.webix.com/samples/26_carousel/imgs/image006.jpg" } }
-                        ],
-                        navigation: {
-                            type: "side",
-                            items: false
+                        id: "mytemplate",
+                        //height: 600,
+                        template: (obj) => {
+                            if (!obj.url) {
+                                let isCustomer = true;
+                                if (isCustomer) {
+                                    return `<div class="paymentBlock">
+                                        <div id="paymentIframe">
+                                            <iframe frameborder="0" style="border:1;width: 100%; height: 800px;" allowfullscreen="" width="100%"  height="800"></iframe>
+                                        </div>
+                                    </div>`;
+                                } else {
+                                    return `<div class="paymentBlock">
+                                        <div id="paymentIframe">
+                                            <iframe frameborder="0" style="border:1;width: 100%; height: 800px;" allowfullscreen="" width="100%"  height="800"></iframe>
+                                        </div>
+                                    </div>`;
+                                }
+                            }
+                            if (obj.url) {
+                                if (obj.url != null) {
+                                    if (window.innerWidth < 768) {
+                                        return `<div id="paymentIframe"><iframe src="${obj.url}" frameborder="0" style="border:1; width:80%;height:660px;position:absolute;z-index:99;" allowfullscreen=""></iframe></div>`;
+                                    } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+                                        return `<div id="paymentIframe"><iframe src="${obj.url}" frameborder="0" style="border:1; width:90%;height:600px;position:absolute;z-index:9999;" allowfullscreen=""></iframe></div>`;
+                                    } else {
+                                        return `<div id="paymentIframe"><iframe src="${obj.url}" frameborder="0" style="border:1; width:100%;height:700px;" allowfullscreen=""></iframe></div>`;
+                                    }
+                                } else {
+                                    if (window.innerWidth < 768) {
+                                        return `<div id="paymentIframe"><iframe src="" frameborder="0" style="border:1; width:80%;height:660px;position:absolute;z-index:99;" allowfullscreen=""></iframe></div>`;
+                                    } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+                                        return `<div id="paymentIframe"><iframe src="" frameborder="0" style="border:1; width:90%;height:600px;position:absolute;z-index:9999;" allowfullscreen=""></iframe></div>`;
+                                    } else {
+                                        return `<div id="paymentIframe"><iframe src="" frameborder="0" style="border:1; width:100%;height:700px;" allowfullscreen=""></iframe></div>`;
+                                    }
+                                }
+                            }
                         }
                     },
                     { template: "<h2>Other content height: 300;<h2>", height: 300 },
-                    { template: "<h1>footer</h1>", autoheight: true },
+                    { template: "<h1>footer</h1>", autoheight: true }
                 ]
             }
-        })
-
+        });
+        $$('mytemplate').setValues({ url: "https://www.bing.com/" });
+        $$('mytemplate').define("height", 600);
+        $$('mytemplate').resize();
     </script>
 </body>
 
