@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./codebase/webix715.min.js"></script>
-    <link rel="stylesheet" href="./codebase/webix715.min.css">
+    <script src="./codebase/webix.min.js"></script>
+    <link rel="stylesheet" href="./codebase/webix.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <title>Document</title>
@@ -19,60 +19,56 @@
             view: "scrollview",
             id: "scrollview",
             scroll: "y",
-            height: 500,
+            scrollSpeed: "300ms",
             body: {
                 rows: [
                     { template: "<h1>header</h1>", autoheight: true },
                     { template: "<h1>navigation</h1>", autoheight: true },
+                    { template: "<h1>body</h1>", height: 800 },
                     {
-                        id: "mytemplate",
-                        //height: 600,
-                        template: (obj) => {
-                            if (!obj.url) {
-                                let isCustomer = true;
-                                if (isCustomer) {
-                                    return `<div class="paymentBlock">
-                                        <div id="paymentIframe">
-                                            <iframe frameborder="0" style="border:1;width: 100%; height: 800px;" allowfullscreen="" width="100%"  height="800"></iframe>
-                                        </div>
-                                    </div>`;
-                                } else {
-                                    return `<div class="paymentBlock">
-                                        <div id="paymentIframe">
-                                            <iframe frameborder="0" style="border:1;width: 100%; height: 800px;" allowfullscreen="" width="100%"  height="800"></iframe>
-                                        </div>
-                                    </div>`;
-                                }
-                            }
-                            if (obj.url) {
-                                if (obj.url != null) {
-                                    if (window.innerWidth < 768) {
-                                        return `<div id="paymentIframe"><iframe src="${obj.url}" frameborder="0" style="border:1; width:80%;height:660px;position:absolute;z-index:99;" allowfullscreen=""></iframe></div>`;
-                                    } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
-                                        return `<div id="paymentIframe"><iframe src="${obj.url}" frameborder="0" style="border:1; width:90%;height:600px;position:absolute;z-index:9999;" allowfullscreen=""></iframe></div>`;
-                                    } else {
-                                        return `<div id="paymentIframe"><iframe src="${obj.url}" frameborder="0" style="border:1; width:100%;height:700px;" allowfullscreen=""></iframe></div>`;
-                                    }
-                                } else {
-                                    if (window.innerWidth < 768) {
-                                        return `<div id="paymentIframe"><iframe src="" frameborder="0" style="border:1; width:80%;height:660px;position:absolute;z-index:99;" allowfullscreen=""></iframe></div>`;
-                                    } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
-                                        return `<div id="paymentIframe"><iframe src="" frameborder="0" style="border:1; width:90%;height:600px;position:absolute;z-index:9999;" allowfullscreen=""></iframe></div>`;
-                                    } else {
-                                        return `<div id="paymentIframe"><iframe src="" frameborder="0" style="border:1; width:100%;height:700px;" allowfullscreen=""></iframe></div>`;
-                                    }
-                                }
-                            }
-                        }
+                        template: `<div id="paymentIframe"><iframe src="https://www.bing.com/" frameborder="0" style="border:1; width:90%;height:600px;position:absolute;z-index:9999;" allowfullscreen=""></iframe></div>`,
+                        height: 600
                     },
-                    { template: "<h2>Other content height: 300;<h2>", height: 300 },
+                    { template: "<h1>Other content<h1>", height: 400 },
                     { template: "<h1>footer</h1>", autoheight: true }
                 ]
             }
         });
-        $$('mytemplate').setValues({ url: "https://www.bing.com/" });
-        $$('mytemplate').define("height", 600);
-        $$('mytemplate').resize();
+
+
+        // webix.ui({
+        //     view: "scrollview",
+        //     id: "scrollview",
+        //     scroll: "y",
+        //     scrollSpeed: "300ms",
+        //     body: {
+        //         rows: [
+        //             { template: "<h1>header</h1>", autoheight: true },
+        //             { template: "<h1>navigation</h1>", autoheight: true },
+        //             { template: "<h1>body</h1>", height: 800 },
+        //             {
+        //                 view: "iframe",
+        //                 id: "frame-body",
+        //                 src: "https://www.bing.com/",
+        //                 height: 500,
+        //                 on: {
+        //                     onAfterLoad() {
+        //                         if (window.innerWidth < 768) {
+        //                             this.define("height", 660);
+        //                         } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+        //                             this.define("height", 600);
+        //                         } else {
+        //                             this.define("height", 700);
+        //                         }
+        //                         this.resize();
+        //                     }
+        //                 }
+        //             },
+        //             { template: "<h1>Other content<h1>", height: 400 },
+        //             { template: "<h1>footer</h1>", autoheight: true }
+        //         ]
+        //     }
+        // });
     </script>
 </body>
 
