@@ -39,13 +39,7 @@
          height: 50
        }
      ]
-   },
-  on: {
-  	onAfterScroll(){
-      const {x, y} = this.getScrollState();
-      y > this.config.scrollState ? $$('footer').hide() : $$('footer').show();
-      this.config.scrollState = y;
-    }
+   }
   }
 });
     </script>
