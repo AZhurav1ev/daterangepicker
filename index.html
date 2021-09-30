@@ -5,18 +5,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./codebase/webix715.min.js"></script>
-    <link rel="stylesheet" href="./codebase/webix715.min.css">
+    <script src="./codebase/webix.min.js"></script>
+    <link rel="stylesheet" href="./codebase/webix.min.css">
     <title>Document</title>
     <style>
-        .footer {
+        .footer{
             background-color: cadetblue;
             padding-bottom: 10px;
             text-align: center;
-            position: absolute;
-            /* bottom: 0; */
-            top: 0
-        }
+            position: fixed;
+            bottom: 0;
+            transform: translate3d(0,0,0);
+            -webkit-backface-visibility: hidden;
+         }
     </style>
 </head>
 
@@ -24,49 +25,29 @@
     <script src="./data.js"></script>
     <script>
         webix.ui({
-            view: "scrollview",
-            id: "scrollview",
-            scroll: "y",
-            scrollSpeed: "300ms",
-            scrollState: 0,
-            body: {
-                rows: [
-                    { template: "<h1>header</h1>", autoheight: true },
-                    { template: "<h1>navigation</h1>", autoheight: true },
-                    { template: "<h1>body</h1>", height: 800 },
-                    { template: "<h1>Other content<h1>", height: 400 },
-                    {
-                        template: "<h1>footer</h1>",
-                        id: "footer",
-                        autoheight: true,
-                        css: 'footer',
-                        on: {
-                            onAfterRender() {
-                                this.$view.style.top = `${window.innerHeight - this.$height}.px`;
-                                const self = this;
-
-                                $$("scrollview").$view.addEventListener('scroll', function (e) {
-                                    const { x, y } = $$("scrollview").getScrollState();
-                                    const height = window.innerHeight - self.$height + y;
-                                    self.$view.style.top = `${height}px`
-                                })
-                            }
-                        }
-                    }
-                ]
-            },
-            // on: {
-            //     onAfterScroll() {
-            //         const { x, y } = this.getScrollState();
-            //         y > this.config.scrollState ? $$('footer').hide() : $$('footer').show();
-            //         if ($$('footer').isVisible()) {
-            //             const height = window.innerHeight - $$('footer').$height + y;
-            //             $$('footer').$view.style.top = `${height}px`
-            //         }
-            //         this.config.scrollState = y
-            //     }
-            // }
-        });
+  view:"scrollview", 
+  scroll:"y", 
+  scrollState: 0,
+  body:{
+     rows:[
+       {template:"<h5>Lorem ipsum</h5>", autoheight:true},
+       {height: 900, template: "<h4>just template with height: 900</h4>"},
+       {
+         template: `<div><h1>footer</h1></div>`,
+         id: 'footer',
+         css: 'footer',
+         height: 50
+       }
+     ]
+   },
+  on: {
+  	onAfterScroll(){
+      const {x, y} = this.getScrollState();
+      y > this.config.scrollState ? $$('footer').hide() : $$('footer').show();
+      this.config.scrollState = y;
+    }
+  }
+});
     </script>
 </body>
 
