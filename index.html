@@ -15,27 +15,6 @@
 <body>
     <script src="./data.js"></script>
     <script>
-//         webix.ui({
-//             view: "scrollview",
-//             id: "scrollview",
-//             scroll: "y",
-//             scrollSpeed: "300ms",
-//             body: {
-//                 rows: [
-//                     { template: "<h1>header</h1>", autoheight: true },
-//                     { template: "<h1>navigation</h1>", autoheight: true },
-//                     { template: "<h1>body</h1>", height: 800 },
-//                     {
-//                         template: `<div id="paymentIframe"><iframe src="https://www.bing.com/" frameborder="0" style="border:1; width:90%;height:600px;position:absolute;z-index:9999;" allowfullscreen=""></iframe></div>`,
-//                         height: 600
-//                     },
-//                     { template: "<h1>Other content<h1>", height: 400 },
-//                     { template: "<h1>footer</h1>", autoheight: true }
-//                 ]
-//             }
-//         });
-
-
         webix.ui({
             view: "scrollview",
             id: "scrollview",
@@ -47,28 +26,49 @@
                     { template: "<h1>navigation</h1>", autoheight: true },
                     { template: "<h1>body</h1>", height: 800 },
                     {
-                        view: "iframe",
-                        id: "frame-body",
-                        src: "https://www.bing.com/",
-                        height: 500,
-                        on: {
-                            onAfterLoad() {
-                                if (window.innerWidth < 768) {
-                                    this.define("height", 660);
-                                } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
-                                    this.define("height", 600);
-                                } else {
-                                    this.define("height", 700);
-                                }
-                                this.resize();
-                            }
-                        }
+                        template: `<div id="paymentIframe"><iframe src="https://www.bing.com/" frameborder="0" style="border:1; width:90%;height:600px;position:absolute;z-index:9999;" allowfullscreen=""></iframe></div>`,
+                        height: 600
                     },
                     { template: "<h1>Other content<h1>", height: 400 },
                     { template: "<h1>footer</h1>", autoheight: true }
                 ]
             }
         });
+
+
+//         webix.ui({
+//             view: "scrollview",
+//             id: "scrollview",
+//             scroll: "y",
+//             scrollSpeed: "300ms",
+//             body: {
+//                 rows: [
+//                     { template: "<h1>header</h1>", autoheight: true },
+//                     { template: "<h1>navigation</h1>", autoheight: true },
+//                     { template: "<h1>body</h1>", height: 800 },
+//                     {
+//                         view: "iframe",
+//                         id: "frame-body",
+//                         src: "https://www.bing.com/",
+//                         height: 500,
+//                         on: {
+//                             onAfterLoad() {
+//                                 if (window.innerWidth < 768) {
+//                                     this.define("height", 660);
+//                                 } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+//                                     this.define("height", 600);
+//                                 } else {
+//                                     this.define("height", 700);
+//                                 }
+//                                 this.resize();
+//                             }
+//                         }
+//                     },
+//                     { template: "<h1>Other content<h1>", height: 400 },
+//                     { template: "<h1>footer</h1>", autoheight: true }
+//                 ]
+//             }
+//         });
     </script>
 </body>
 
