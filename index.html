@@ -8,105 +8,47 @@
     <script src="./codebase/webix.min.js"></script>
     <link rel="stylesheet" href="./codebase/webix.min.css">
     <title>Document</title>
-    <style>
-        .footer{
-            background-color: cadetblue;
-            padding-bottom: 10px;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-         }
-    </style>
 </head>
 
 <body>
-    <script src="./data.js"></script>
     <script>
+        function img(obj) {
+            return '<img src="' + obj.src + '" class="content" ondragstart="return false"/><div class="title">' + obj.title + '</div>'
+        }
+
+
         webix.ui({
-  view:"scrollview", 
-  scroll:"y", 
-  scrollState: 0,
-  body:{
-     rows:[
-       {template:"<h5>Lorem ipsum1500</h5>", autoheight:true},
-       {height: 1500, template: "<h4>just template with height: 1500</h4>"},
-       {
-         template: `<div><h1>footer 703</h1></div>`,
-         id: 'footer',
-         css: 'footer',
-         height: 50 
-       }
-     ]
-   }
-});
+            view: "scrollview",
+            id: "scrollview",
+            scroll: "y",
+            height: 500,
+            body: {
+                rows: [
+                    { template: "<h1>header 703 </h1>", autoheight: true },
+                    { template: "<h1>navigation</h1>", autoheight: true },
+                    {
+                        view: "carousel",
+                        id: "carousel",
+                        height: 300,
+                        cols: [
+                            { css: "image", template: img, data: { src: "http://docs.webix.com/samples/26_carousel/imgs/image001.jpg" } },
+                            { css: "image", template: img, data: { src: "http://docs.webix.com/samples/26_carousel/imgs/image002.jpg" } },
+                            { css: "image", template: img, data: { src: "http://docs.webix.com/samples/26_carousel/imgs/image003.jpg" } },
+                            { css: "image", template: img, data: { src: "http://docs.webix.com/samples/26_carousel/imgs/image004.jpg" } },
+                            { css: "image", template: img, data: { src: "http://docs.webix.com/samples/26_carousel/imgs/image005.jpg" } },
+                            { css: "image", template: img, data: { src: "http://docs.webix.com/samples/26_carousel/imgs/image006.jpg" } }
+                        ],
+                        navigation: {
+                            type: "side",
+                            items: false
+                        }
+                    },
+                    { template: "<h2>Other content height: 300;<h2>", height: 300 },
+                    { template: "<h1>footer</h1>", autoheight: true },
+                ]
+            }
+        })
+
     </script>
 </body>
-
-<!-- body: {
-    rows: [
-        { template: "<h1>header</h1>", autoheight: true },
-        { template: "<h1>navigation</h1>", autoheight: true },
-        { template: "<h1>body</h1>", height: 800 },
-        { template: "<h1>Other content<h1>", height: 400 },
-        {
-            template: "<h1>footer</h1>",
-            id: "footer",
-            autoheight: true,
-            css: 'footer',
-            on: {
-                onAfterRender() {
-                    this.$view.style.top = `${window.innerHeight - this.$height}.px`;
-                    const self = this;
-
-                    $$("scrollview").$view.addEventListener('scroll', function (e) {
-                        const { x, y } = $$("scrollview").getScrollState();
-                        const height = window.innerHeight - self.$height + y;
-                        self.$view.style.top = `${height}px`
-                    })
-                }
-            }
-        }
-    ]
-},
-on: {
-    onAfterScroll() {
-        const { x, y } = this.getScrollState();
-        console.log(this._footerHeight)
-        const height = window.innerHeight - 60 + y;
-        $$('footer').$view.style.top = `${height}px`;
-    }
-}
-}); -->
-
-
-<!-- body: {
-    rows: [
-        { template: "<h1>header</h1>", autoheight: true },
-        { template: "<h1>navigation</h1>", autoheight: true },
-        { template: "<h1>body</h1>", height: 800 },
-        { template: "<h1>Other content<h1>", height: 400 },
-        {
-            template: "<h1>footer</h1>",
-            id: "footer",
-            autoheight: true,
-            css: 'footer',
-            on: {
-                onAfterRender() {
-                    console.log('rend')
-                    $$("scrollview")._footerHeight = this.$height;
-                    this.$view.style.top = `${window.innerHeight - this.$height}.px`;
-                }
-            }
-        }
-    ]
-},
-on: {
-    onAfterScroll() {
-        const { x, y } = this.getScrollState();
-        console.log(this._footerHeight)
-        const height = window.innerHeight - this._footerHeight + y;
-        $$('footer').$view.style.top = `${height}px`;
-    }
-} -->
-
 </html>
