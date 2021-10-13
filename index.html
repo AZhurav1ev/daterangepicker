@@ -13,8 +13,8 @@
 </head>
 
 <body>
-    <script src="./pdf-response.js"></script>
-       function iOSversion() {
+        <script>
+        function iOSversion() {
             if (/iP(hone|od|ad)/.test(navigator.platform)) {
                 var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
                 return parseInt(v[1], 10);
@@ -43,7 +43,7 @@
                             { gravity: 0.5 },
                             {
                                 rows: [
-                                    { template: `version 703, downloading conditions`, autoheight: true },
+                                    { template: `version 703, download condition`, autoheight: true },
                                     { view: "pdfbar", id: "toolbar" },
                                     { view: "pdfviewer", id: "pdf", toolbar: "toolbar" },
                                     {
