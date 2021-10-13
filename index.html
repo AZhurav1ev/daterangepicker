@@ -15,8 +15,35 @@
 <body>
     <script src="./pdf-response.js"></script>
     <script>
+        function openSaveFileDialog(data, filename, mimetype) {
+
+            if (!data) return;
+
+            var blob = data.constructor !== Blob
+                ? new Blob([data], { type: mimetype || 'application/octet-stream' })
+                : data;
+
+            if (navigator.msSaveBlob) {
+                navigator.msSaveBlob(blob, filename);
+                return;
+            }
+
+            var lnk = document.createElement('a'),
+                url = window.URL,
+                objectURL;
+
+            if (mimetype) {
+                lnk.type = mimetype;
+            }
+
+            lnk.download = filename || 'untitled';
+            lnk.href = objectURL = url.createObjectURL(blob);
+            lnk.dispatchEvent(new MouseEvent('click'));
+            setTimeout(url.revokeObjectURL.bind(url, objectURL));
+        }
+
         webix.ready(function () {
-           webix.ui({
+            webix.ui({
                 rows: [
                     { gravity: 0.3 },
                     {
@@ -24,7 +51,7 @@
                             { gravity: 0.5 },
                             {
                                 rows: [
-                                    { template: `version 705 - custom download`, autoheight: true },
+                                    { template: `version 703 - new custom doenload`, autoheight: true },
                                     { view: "pdfbar", id: "toolbar" },
                                     { view: "pdfviewer", id: "pdf", toolbar: "toolbar" },
                                     {
@@ -32,16 +59,10 @@
                                         value: "custom download",
                                         css: "webix_primary",
                                         autowidth: true,
+
                                         click: function () {
                                             $$("pdf").$pdfDoc.getData().then((data) => {
-                                                var blob = new Blob([data]);
-                                                var a = window.document.createElement("a");
-                                                a.href = window.URL.createObjectURL(blob, { type: "application/pdf" });
-                                                a.download = "test.pdf";
-                                                document.body.appendChild(a);
-                                                a.click();
-                                                document.body.removeChild(a);
-
+                                                openSaveFileDialog(data, "test", "application/pdf")
                                             })
                                         }
                                     }
@@ -58,7 +79,7 @@
                 let lcPDFData = atob(PdfContent);
                 lcFileName = { "data": lcPDFData };
                 $$("pdf").parse(lcFileName);
-            }, 500);
+            }, 100);
         });
     </script>
 </body>
