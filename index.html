@@ -5,67 +5,43 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./codebase/webix.min.js"></script>
+    <script src="./codebase/webix.js"></script>
     <link rel="stylesheet" href="./codebase/webix.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <title>Document</title>
-    <style>
-        .fixed-footer {
-            background-color: cadetblue;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
-        }
-
-        .hidden-footer {
-            background-color: cadetblue;
-            text-align: center;
-            display: none;
-            position: static;
-
-        }
-    </style>
 </head>
 
 <body>
+    <script src="./pdf-response.js"></script>
     <script>
-        webix.ui({
-            view: "scrollview",
-            scroll: "y",
-            scrollState: 0,
-            body: {
+        webix.ready(function () {
+            webix.ui({
                 rows: [
-                    { template: "<h5>Lorem ipsum</h5>", autoheight: true },
-                    { height: 1300, template: "<h4>just template with height: 1300</h4>", borderless: true },
+                    { gravity: 0.3 },
                     {
-                        template: `<div><h1>footer</h1></div>`,
-                        id: 'footer',
-                        css: 'fixed-footer',
-                        autoheight: true
-                    }
-                ]
-            },
-            on: {
-                onAfterScroll() {
-                    const footer = $$('footer');
-                    const { x, y } = this.getScrollState();
+                        cols: [
+                            { gravity: 0.5 },
+                            {
+                                rows: [
+                                    { view: "pdfbar", id: "toolbar" },
+                                    { view: "pdfviewer", id: "pdf", toolbar: "toolbar" }
+                                ]
+                            },
+                            { gravity: 0.5 }
 
-                    if (y > this.config.scrollState) {
-                        if (footer.$view.classList.contains("fixed-footer")) {
-                            console.log('hide');
-                            footer.$view.classList.remove("fixed-footer");
-                            footer.$view.classList.add("hidden-footer");
-                        }
-                    } else {
-                        if (footer.$view.classList.contains("hidden-footer")) {
-                            console.log('show');
-                            footer.$view.classList.remove("hidden-footer");
-                            footer.$view.classList.add("fixed-footer");
-                        }
-                    }
-                    this.config.scrollState = y;
-                }
-            }
+                        ]
+                    },
+                    { gravity: 0.3 }
+                ]
+            });
+            setTimeout(() => {
+                let lcPDFData = atob(PdfContent);
+                lcFileName = { "data": lcPDFData };
+                $$("pdf").parse(lcFileName);
+            }, 500);
         });
     </script>
 </body>
+
 </html>
