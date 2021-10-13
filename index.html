@@ -34,6 +34,34 @@
                 navigator.userAgent.indexOf('CriOS') == -1 &&
                 navigator.userAgent.indexOf('FxiOS') == -1;
         }
+            
+            function openSaveFileDialog(data, filename, mimetype) {
+
+            if (!data) return;
+
+            var blob = data.constructor !== Blob
+                ? new Blob([data], { type: mimetype || 'application/octet-stream' })
+                : data;
+
+            if (navigator.msSaveBlob) {
+                navigator.msSaveBlob(blob, filename);
+                return;
+            }
+
+            var lnk = document.createElement('a'),
+                url = window.URL,
+                objectURL;
+
+            if (mimetype) {
+                lnk.type = mimetype;
+            }
+
+            lnk.download = filename || 'untitled';
+            lnk.href = objectURL = url.createObjectURL(blob);
+            lnk.dispatchEvent(new MouseEvent('click'));
+            setTimeout(url.revokeObjectURL.bind(url, objectURL));
+
+        }
 
         webix.ready(function () {
             webix.ui({
@@ -53,19 +81,9 @@
                                         css: "webix_primary",
                                         autowidth: true,
                                         click: function () {
-                                            if (isIOS() && iOSversion() > 12) {
-                                                $$("pdf").$pdfDoc.getData().then((data) => {
-                                                    var blob = new Blob([data]);
-                                                    var a = window.document.createElement("a");
-                                                    a.href = window.URL.createObjectURL(blob, { type: "application/pdf" });
-                                                    a.download = "test.pdf";
-                                                    document.body.appendChild(a);
-                                                    a.click();
-                                                    document.body.removeChild(a);
+                                            $$("pdf").$pdfDoc.getData().then((data) => {
+                                                    openSaveFileDialog(data, 'test', "application/pdf")
                                                 });
-                                            } else {
-                                                $$("pdf").download();
-                                            }
                                         }
                                     }
                                 ]
