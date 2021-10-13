@@ -77,7 +77,7 @@
                             { gravity: 0.5 },
                             {
                                 rows: [
-                                    { template: `version 703, latest`, autoheight: true },
+                                    { template: `version 703, latest 2`, autoheight: true },
                                     { view: "pdfbar", id: "toolbar" },
                                     { view: "pdfviewer", id: "pdf", toolbar: "toolbar" },
                                     {
@@ -92,7 +92,7 @@
                                                 });
                                             } else {
                                                 $$("pdf").$pdfDoc.getData().then((data) => {
-                                                    iosHigherVersions(data, 'test', "application/pdf")
+                                                    iosLowerVersions(data, 'test', "application/pdf")
                                                 });
                                             }
                                         }
