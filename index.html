@@ -15,31 +15,11 @@
 <body>
     <script src="./pdf-response.js"></script>
     <script>
-        function openSaveFileDialog(data, filename, mimetype) {
-
-            if (!data) return;
-
-            var blob = data.constructor !== Blob
-                ? new Blob([data], { type: mimetype || 'application/octet-stream' })
-                : data;
-
-            if (navigator.msSaveBlob) {
-                navigator.msSaveBlob(blob, filename);
-                return;
+        function iOSversion() {
+            if (/iP(hone|od|ad)/.test(navigator.platform)) {
+                var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+                return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
             }
-
-            var lnk = document.createElement('a'),
-                url = window.URL,
-                objectURL;
-
-            if (mimetype) {
-                lnk.type = mimetype;
-            }
-
-            lnk.download = filename || 'untitled';
-            lnk.href = objectURL = url.createObjectURL(blob);
-            lnk.dispatchEvent(new MouseEvent('click'));
-            setTimeout(url.revokeObjectURL.bind(url, objectURL));
         }
 
         webix.ready(function () {
@@ -51,7 +31,7 @@
                             { gravity: 0.5 },
                             {
                                 rows: [
-                                    { template: `version 703 - new custom doenload`, autoheight: true },
+                                    { template: `version 703`, autoheight: true },
                                     { view: "pdfbar", id: "toolbar" },
                                     { view: "pdfviewer", id: "pdf", toolbar: "toolbar" },
                                     {
@@ -59,11 +39,21 @@
                                         value: "custom download",
                                         css: "webix_primary",
                                         autowidth: true,
-
                                         click: function () {
-                                            $$("pdf").$pdfDoc.getData().then((data) => {
-                                                openSaveFileDialog(data, "test", "application/pdf")
-                                            })
+                                            const version = iOSversion();
+                                            if (parseInt(version < 13)) {
+                                            	$$("toolbar").download();
+                                            } else {
+                                              $$("pdf").$pdfDoc.getData().then((data) => {
+                                            	var blob = new Blob([data]);
+                                                var a = window.document.createElement("a");
+                                                a.href = window.URL.createObjectURL(blob, { type: "application/pdf" });
+                                                a.download = "test.pdf";
+                                                document.body.appendChild(a);
+                                                a.click();
+                                                document.body.removeChild(a);
+                                              });
+                                            }
                                         }
                                     }
                                 ]
