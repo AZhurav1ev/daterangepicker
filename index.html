@@ -15,7 +15,7 @@
 <body>
     <script src="./pdf-response.js"></script>
          <script>
-        function iOSversion() {
+       function iOSversion() {
             if (/iP(hone|od|ad)/.test(navigator.platform)) {
                 var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
                 return parseInt(v[1], 10);
@@ -36,37 +36,32 @@
         }
 
         function iosHigherVersions(data, filename, mimetype) {
+
             if (!data) return;
+
             var blob = data.constructor !== Blob
                 ? new Blob([data], { type: mimetype || 'application/octet-stream' })
                 : data;
+
             if (navigator.msSaveBlob) {
                 navigator.msSaveBlob(blob, filename);
                 return;
             }
-            var link = document.createElement('a'),
+
+            var lnk = document.createElement('a'),
                 url = window.URL,
                 objectURL;
+
             if (mimetype) {
-                link.type = mimetype;
+                lnk.type = mimetype;
             }
-            link.download = filename || 'untitled';
 
-            link.href = objectURL = url.createObjectURL(blob);
-            link.dispatchEvent(new MouseEvent('click'));
+            lnk.download = filename || 'untitled';
+            lnk.href = objectURL = url.createObjectURL(blob);
+            lnk.dispatchEvent(new MouseEvent('click'));
             setTimeout(url.revokeObjectURL.bind(url, objectURL));
-        }
 
-        function iosLowerVersions(data, filename, mimetype) {
-            var blob = new Blob([data]);
-            var a = window.document.createElement("a");
-            a.href = window.URL.createObjectURL(blob, { type: mimetype });
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
         }
-
 
         webix.ready(function () {
             webix.ui({
@@ -77,7 +72,7 @@
                             { gravity: 0.5 },
                             {
                                 rows: [
-                                    { template: `version 703, latest 2`, autoheight: true },
+                                    { template: `version 703, 111`, autoheight: true },
                                     { view: "pdfbar", id: "toolbar" },
                                     { view: "pdfviewer", id: "pdf", toolbar: "toolbar" },
                                     {
@@ -88,11 +83,17 @@
                                         click: function () {
                                             if (isIOS() && iOSversion() > 12) {
                                                 $$("pdf").$pdfDoc.getData().then((data) => {
-                                                    iosHigherVersions(data, "test", "application/pdf")
+                                                    var blob = new Blob([data]);
+                                                    var a = window.document.createElement("a");
+                                                    a.href = window.URL.createObjectURL(blob, { type: "application/pdf" });
+                                                    a.download = "test.pdf";
+                                                    document.body.appendChild(a);
+                                                    a.click();
+                                                    document.body.removeChild(a);
                                                 });
                                             } else {
                                                 $$("pdf").$pdfDoc.getData().then((data) => {
-                                                    iosLowerVersions(data, 'test', "application/pdf")
+                                                    iosHigherVersions(data, 'test', "application/pdf")
                                                 });
                                             }
                                         }
