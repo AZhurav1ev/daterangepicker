@@ -14,8 +14,7 @@
 
 <body>
     <script src="./pdf-response.js"></script>
-       <script>
-        function iOSversion() {
+       function iOSversion() {
             if (/iP(hone|od|ad)/.test(navigator.platform)) {
                 var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
                 return parseInt(v[1], 10);
@@ -28,6 +27,13 @@
                 !window.MSStream
         }
 
+        function isSafari() {
+            return navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
+                navigator.userAgent &&
+                navigator.userAgent.indexOf('CriOS') == -1 &&
+                navigator.userAgent.indexOf('FxiOS') == -1;
+        }
+
         webix.ready(function () {
             webix.ui({
                 rows: [
@@ -37,7 +43,7 @@
                             { gravity: 0.5 },
                             {
                                 rows: [
-                                    { template: `version 703, checking device`, autoheight: true },
+                                    { template: `version 703`, autoheight: true },
                                     { view: "pdfbar", id: "toolbar" },
                                     { view: "pdfviewer", id: "pdf", toolbar: "toolbar" },
                                     {
@@ -55,7 +61,6 @@
                                                     document.body.appendChild(a);
                                                     a.click();
                                                     document.body.removeChild(a);
-                                                    alert(iOSversion())
                                                 });
                                             } else {
                                                 $$("pdf").download();
