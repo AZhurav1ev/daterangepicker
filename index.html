@@ -14,12 +14,18 @@
 
 <body>
     <script src="./pdf-response.js"></script>
-    <script>
+       <script>
         function iOSversion() {
             if (/iP(hone|od|ad)/.test(navigator.platform)) {
                 var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
-                return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
+                return parseInt(v[1], 10);
             }
+        }
+
+        function isIOS() {
+            return (/iPad|iPhone|iPod/.test(navigator.platform) ||
+                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) &&
+                !window.MSStream
         }
 
         webix.ready(function () {
@@ -31,7 +37,7 @@
                             { gravity: 0.5 },
                             {
                                 rows: [
-                                    { template: `version 703, custom download, version check`, autoheight: true },
+                                    { template: `version 703`, autoheight: true },
                                     { view: "pdfbar", id: "toolbar" },
                                     { view: "pdfviewer", id: "pdf", toolbar: "toolbar" },
                                     {
@@ -40,19 +46,18 @@
                                         css: "webix_primary",
                                         autowidth: true,
                                         click: function () {
-                                            const version = iOSversion();
-                                            if (parseInt(version < 13)) {
-                                            	$$("toolbar").download();
+                                            if (isIOS() && iOSversion() > 12) {
+                                                $$("pdf").$pdfDoc.getData().then((data) => {
+                                                    var blob = new Blob([data]);
+                                                    var a = window.document.createElement("a");
+                                                    a.href = window.URL.createObjectURL(blob, { type: "application/pdf" });
+                                                    a.download = "test.pdf";
+                                                    document.body.appendChild(a);
+                                                    a.click();
+                                                    document.body.removeChild(a);
+                                                });
                                             } else {
-                                              $$("pdf").$pdfDoc.getData().then((data) => {
-                                            	var blob = new Blob([data]);
-                                                var a = window.document.createElement("a");
-                                                a.href = window.URL.createObjectURL(blob, { type: "application/pdf" });
-                                                a.download = "test.pdf";
-                                                document.body.appendChild(a);
-                                                a.click();
-                                                document.body.removeChild(a);
-                                              });
+                                                $$("pdf").download();
                                             }
                                         }
                                     }
