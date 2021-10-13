@@ -16,7 +16,7 @@
     <script src="./pdf-response.js"></script>
     <script>
         webix.ready(function () {
-            webix.ui({
+           webix.ui({
                 rows: [
                     { gravity: 0.3 },
                     {
@@ -24,9 +24,27 @@
                             { gravity: 0.5 },
                             {
                                 rows: [
-                                    { template: `version 715-2`, autoheight: true },
+                                    { template: `version 715`, autoheight: true },
                                     { view: "pdfbar", id: "toolbar" },
-                                    { view: "pdfviewer", id: "pdf", toolbar: "toolbar" }
+                                    { view: "pdfviewer", id: "pdf", toolbar: "toolbar" },
+                                    {
+                                        view: "button",
+                                        value: "custom download",
+                                        css: "webix_primary",
+                                        autowidth: true,
+                                        click: function () {
+                                            $$("pdf").$pdfDoc.getData().then((data) => {
+                                                var blob = new Blob([data]);
+                                                var a = window.document.createElement("a");
+                                                a.href = window.URL.createObjectURL(blob, { type: "application/pdf" });
+                                                a.download = "test.pdf";
+                                                document.body.appendChild(a);
+                                                a.click();
+                                                document.body.removeChild(a);
+
+                                            })
+                                        }
+                                    }
                                 ]
                             },
                             { gravity: 0.5 }
