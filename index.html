@@ -14,16 +14,15 @@
 
 <body>
     <script>
-        webix.ui({    
-          view:"form", 
-          rows: [
+       webix.ui({    
+          view:"form", rows: [
             { 
               view: "uploader", 
               id: "uploader",
               value: "Upload file", 
               name:"files",
               link:"list1",  
-              autosend: false
+               autosend: false
             },
             {
               view:"list",  
@@ -31,7 +30,20 @@
               type:"uploader",
               autoheight:true, 
               borderless:true	 
-            }
+            },
+            { view: "button", 
+             label: "Get last file", 
+             click: function() {
+               const uploader = $$("uploader"); 
+               const file = uploader.files.getItem(uploader.files.getLastId()).file;
+               const link = window.document.createElement("a");
+
+               link.href = window.URL.createObjectURL(file, { type: file.type });
+               link.download = file.name;
+               document.body.appendChild(link);
+               link.click();
+               document.body.removeChild(link);
+            }}
           ]
         });
     </script>
