@@ -2,51 +2,51 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./codebase/webix.min.js"></script>
-    <link rel="stylesheet" href="./codebase/webix.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./codebase/webix.min.js"></script>
+  <link rel="stylesheet" href="./codebase/webix.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <title>Uploader test</title>
 </head>
 
 <body>
-    <script>
-       webix.ui({    
-          view:"form", rows: [
-            { 
-              view: "uploader", 
-              id: "uploader",
-              value: "Upload file", 
-              name:"files",
-              link:"list1",  
-               autosend: false
-            },
-            {
-              view:"list",  
-              id:"list1", 
-              type:"uploader",
-              autoheight:true, 
-              borderless:true	 
-            },
-            { view: "button", 
-             label: "Get last file", 
-             click: function() {
-               const uploader = $$("uploader"); 
-               const file = uploader.files.getItem(uploader.files.getLastId()).file;
-               const link = window.document.createElement("a");
-
-               link.href = window.URL.createObjectURL(file, { type: file.type });
-               link.download = file.name;
-               document.body.appendChild(link);
-               link.click();
-               document.body.removeChild(link);
-            }}
-          ]
-        });
-    </script>
+  <script src="browser.js"></script>
+  <script>
+    webix.ui({
+      view: "form",
+      rows: [
+        {
+          view: "uploader",
+          id: "uploader",
+          value: "Upload file",
+          name: "files",
+          link: "list1",
+          autosend: false
+        },
+        {
+          view: "list",
+          id: "list1",
+          type: "uploader",
+          autoheight: true,
+          borderless: true
+        },
+        {
+          view: "button",
+          label: "Get files",
+          click: function () {
+            const names = [], urls = Object.values($$("uploader").files.data.pull).map(({ file }) => {
+              names.push(file.name);
+              return window.URL.createObjectURL(file, { type: file.type })
+            });
+            urls.length > 0 ? multiDownload(urls, { rename: ({ url, index }) => names[index] }) : webix.message('No data');
+          }
+        }
+      ]
+    });
+  </script>
 </body>
 
 </html>
