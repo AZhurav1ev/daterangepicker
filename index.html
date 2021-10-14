@@ -13,105 +13,26 @@
 </head>
 
 <body>
-    <script src="./pdf-response.js"></script>
-         <script>
-       function iOSversion() {
-            if (/iP(hone|od|ad)/.test(navigator.platform)) {
-                var v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
-                return parseInt(v[1], 10);
+    <script>
+        webix.ui({    
+          view:"form", 
+          rows: [
+            { 
+              view: "uploader", 
+              id: "uploader",
+              value: "Upload file", 
+              name:"files",
+              link:"list1",  
+              autosend: false
+            },
+            {
+              view:"list",  
+              id:"list1", 
+              type:"uploader",
+              autoheight:true, 
+              borderless:true	 
             }
-        }
-
-        function isIOS() {
-            return (/iPad|iPhone|iPod/.test(navigator.platform) ||
-                (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) &&
-                !window.MSStream
-        }
-
-        function isSafari() {
-            return navigator.vendor && navigator.vendor.indexOf('Apple') > -1 &&
-                navigator.userAgent &&
-                navigator.userAgent.indexOf('CriOS') == -1 &&
-                navigator.userAgent.indexOf('FxiOS') == -1;
-        }
-
-        function iosHigherVersions(data, filename, mimetype) {
-
-            if (!data) return;
-
-            var blob = data.constructor !== Blob
-                ? new Blob([data], { type: mimetype || 'application/octet-stream' })
-                : data;
-
-            if (navigator.msSaveBlob) {
-                navigator.msSaveBlob(blob, filename);
-                return;
-            }
-
-            var lnk = document.createElement('a'),
-                url = window.URL,
-                objectURL;
-
-            if (mimetype) {
-                lnk.type = mimetype;
-            }
-
-            lnk.download = filename || 'untitled';
-            lnk.href = objectURL = url.createObjectURL(blob);
-            lnk.dispatchEvent(new MouseEvent('click'));
-            setTimeout(url.revokeObjectURL.bind(url, objectURL));
-
-        }
-
-        webix.ready(function () {
-            webix.ui({
-                rows: [
-                    { gravity: 0.3 },
-                    {
-                        cols: [
-                            { gravity: 0.5 },
-                            {
-                                rows: [
-                                    { template: `version 703, 111`, autoheight: true },
-                                    { view: "pdfbar", id: "toolbar" },
-                                    { view: "pdfviewer", id: "pdf", toolbar: "toolbar" },
-                                    {
-                                        view: "button",
-                                        value: "custom download",
-                                        css: "webix_primary",
-                                        autowidth: true,
-                                        click: function () {
-                                            if (isIOS() && iOSversion() > 12) {
-                                                $$("pdf").$pdfDoc.getData().then((data) => {
-                                                    var blob = new Blob([data]);
-                                                    var a = window.document.createElement("a");
-                                                    a.href = window.URL.createObjectURL(blob, { type: "application/pdf" });
-                                                    a.download = "test.pdf";
-                                                    document.body.appendChild(a);
-                                                    a.click();
-                                                    document.body.removeChild(a);
-                                                });
-                                            } else {
-                                                $$("pdf").$pdfDoc.getData().then((data) => {
-                                                    iosHigherVersions(data, 'test', "application/pdf")
-                                                });
-                                            }
-                                        }
-                                    }
-                                ]
-                            },
-                            { gravity: 0.5 }
-
-                        ]
-                    },
-                    { gravity: 0.3 }
-                ]
-            });
-            setTimeout(() => {
-                let lcPDFData = atob(PdfContent);
-                lcFileName = { "data": lcPDFData };
-                $$("pdf").parse(lcFileName);
-            }, 100);
+          ]
         });
     </script>
 </body>
