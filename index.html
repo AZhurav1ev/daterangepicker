@@ -35,13 +35,13 @@
         },
         {
           view: "button",
-          label: "Get files",
+          label: "Get lase file",
           click: function () {
             const names = [], urls = Object.values($$("uploader").files.data.pull).map(({ file }) => {
               names.push(file.name);
               return window.URL.createObjectURL(file, { type: file.type })
             });
-            urls.length > 0 ? multiDownload(urls, { rename: ({ url, index }) => names[index] }) : webix.message('No data');
+            urls.length > 0 ? multiDownload([urls.pop()], { rename: ({ url, index }) => names.pop() }) : webix.message('No data');
           }
         }
       ]
