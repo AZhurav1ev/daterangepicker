@@ -2,51 +2,49 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="./codebase/webix.min.js"></script>
-  <link rel="stylesheet" href="./codebase/webix.min.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-  <title>Uploader test</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./codebase/webix.min.js"></script>
+    <link rel="stylesheet" href="./codebase/webix.min.css">
+    <title>Pdf download test</title>
 </head>
 
 <body>
-  <script src="browser.js"></script>
-  <script>
-    webix.ui({
-      view: "form",
-      rows: [
-        {
-          view: "uploader",
-          id: "uploader",
-          value: "Upload file",
-          name: "files",
-          link: "list1",
-          autosend: false
-        },
-        {
-          view: "list",
-          id: "list1",
-          type: "uploader",
-          autoheight: true,
-          borderless: true
-        },
-        {
-          view: "button",
-          label: "Get last file",
-          click: function () {
-            const names = [], urls = Object.values($$("uploader").files.data.pull).map(({ file }) => {
-              names.push(file.name);
-              return window.URL.createObjectURL(file, { type: file.type })
+    <script src="browser.js"></script>
+    <script src="pdfdoc.js"></script>
+    <script>
+        webix.ready(function () {
+            webix.ui({
+                rows: [
+                    { template: `version 703`, autoheight: true },
+                    { view: "pdfbar", id: "toolbar" },
+                    {
+                        view: "pdfviewer",
+                        id: "pdf",
+                        toolbar: "toolbar",
+                        on: {
+                            onAfterLoad() {
+                                const downloadButton = $$("toolbar").$view.querySelector('.webix_scroll_cont').lastChild;
+                                webix.event(downloadButton, 'click', (e) => {
+                                    e.stopImmediatePropagation();
+                                    $$("pdf").$pdfDoc.getData().then((data) => {
+                                        if (!data) return;
+                                        const blob = new Blob([data], { type: "application/pdf" });
+                                        const urlObj = window.URL.createObjectURL(blob, { type: "application/pdf" });
+                                        multiDownload([urlObj], { rename: () => "test" });
+                                    });
+                                }, true);
+                            }
+                        }
+                    }
+                ]
             });
-            urls.length > 0 ? multiDownload([urls.pop()], { rename: ({ url, index }) => names.pop() }) : webix.message('No data');
-          }
-        }
-      ]
-    });
-  </script>
+            setTimeout(() => {
+                $$("pdf").parse({ "data": atob(pdfDoc) });
+            }, 100);
+        });
+    </script>
 </body>
 
 </html>
