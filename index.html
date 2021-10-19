@@ -8,6 +8,8 @@
     <script src="./codebase/webix.min.js"></script>
     <link rel="stylesheet" href="./codebase/webix.min.css">
     <title>Multi download test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -29,7 +31,23 @@
                                         view: "button",
                                         value: "Download csv",
                                         autowidth: true,
-                                        click: function () {
+                                        click: function (e) {
+                                            var json_pre = '[{"Id":1,"UserName":"Sam Smith"},{"Id":2,"UserName":"Fred Frankly"},{"Id":1,"UserName":"Zachary Zupers"}]';
+                                            var json = $.parseJSON(json_pre);
+
+                                            var csv = JSON2CSV(json);
+                                            var downloadLink = document.createElement("a");
+                                            var blob = new Blob(["\ufeff", csv]);
+                                            var url = URL.createObjectURL(blob);
+                                            downloadLink.href = url;
+                                            downloadLink.download = "data.csv";
+
+                                            document.body.appendChild(downloadLink);
+                                            downloadLink.click();
+                                            document.body.removeChild(downloadLink);
+
+
+
                                             // Solution for apple developers
                                             // const urlArray = [];
                                             // for (let i = 0; i < 3; i++) {
@@ -53,11 +71,12 @@
 
 
                                             // Partial working solution
-                                            const urlArray = [];
-                                            for (let i = 0; i < 3; i++) {
-                                                urlArray.push('data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
-                                            }
-                                            multiDownload([urlArray[0]], { rename: ({ index }) => `test.csv` });
+                                            // e.preventDefault();
+                                            // const urlArray = [];
+                                            // for (let i = 0; i < 3; i++) {
+                                            //     urlArray.push('data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
+                                            // }
+                                            // multiDownload([urlArray], { rename: ({ index }) => `test.csv` });
 
                                             //working solution for one file
                                             // let dataUrl = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
