@@ -32,10 +32,29 @@
                                         value: "Download csv",
                                         autowidth: true,
                                         click: function (e) {
+                                            function ConvertToCSV(objArray) {
+                                                var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+                                                var str = '';
+
+                                                for (var i = 0; i < array.length; i++) {
+                                                    var line = '';
+                                                    for (var index in array[i]) {
+                                                        if (line != '') line += ','
+
+                                                        line += array[i][index];
+                                                    }
+
+                                                    str += line + '\r\n';
+                                                }
+
+                                                return str;
+                                            }
+
+
                                             var json_pre = '[{"Id":1,"UserName":"Sam Smith"},{"Id":2,"UserName":"Fred Frankly"},{"Id":1,"UserName":"Zachary Zupers"}]';
                                             var json = $.parseJSON(json_pre);
 
-                                            var csv = JSON2CSV(json);
+                                            var csv = ConvertToCSV(json);
                                             var downloadLink = document.createElement("a");
                                             var blob = new Blob(["\ufeff", csv]);
                                             var url = URL.createObjectURL(blob);
