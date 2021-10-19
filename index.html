@@ -24,19 +24,40 @@
                             {},
                             {
                                 rows: [
-                                    { template: `version 1.4`, autoheight: true, borderless: true },
+                                    { template: `version 1.6`, autoheight: true, borderless: true },
                                     {
                                         view: "button",
                                         value: "Download csv",
                                         autowidth: true,
                                         click: function () {
+                                            // Solution for apple developers
                                             const urlArray = [];
-
                                             for (let i = 0; i < 3; i++) {
                                                 urlArray.push('data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
                                             }
+                                            urlArray.forEach((url, index) => {
+                                                var link = document.createElement("a");
+                                                link.download = `test${index}.csv`;
+                                                link.target = "_blank";
+                                                // Construct the URI 
+                                                link.href = url;
+                                                document.body.appendChild(link);
+                                                setTimeout(function () {
+                                                    link.click();
+                                                    // Cleanup the DOM 
+                                                    document.body.removeChild(link);
+                                                }, 500 * index);
+                                            });
 
-                                            multiDownload(urlArray, { rename: ({ index }) => `test${index}.csv` });
+
+
+
+                                            // Partial working solution
+                                            // const urlArray = [];
+                                            // for (let i = 0; i < 3; i++) {
+                                            //     urlArray.push('data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
+                                            // }
+                                            // multiDownload(urlArray, { rename: ({ index }) => `test${index}.csv` });
 
                                             // working solution for one file
                                             // let dataUrl = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
