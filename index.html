@@ -7,37 +7,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./codebase/webix.min.js"></script>
     <link rel="stylesheet" href="./codebase/webix.min.css">
-    <title>Pdf download test</title>
+    <title>Multi download test</title>
 </head>
 
 <body>
     <script src="browser.js"></script>
     <script src="pdfdoc.js"></script>
+    <script src="csvData.js"></script>
     <script>
         webix.ready(function () {
             webix.ui({
                 rows: [
-                    { template: `version 703`, autoheight: true },
-                    { view: "pdfbar", id: "toolbar" },
+                    {},
                     {
-                        view: "pdfviewer",
-                        id: "pdf",
-                        toolbar: "toolbar",
-                        on: {
-                            onAfterLoad() {
-                                const downloadButton = $$("toolbar").$view.querySelector('.webix_scroll_cont').lastChild;
-                                webix.event(downloadButton, 'click', (e) => {
-                                    e.stopImmediatePropagation();
-                                    $$("pdf").$pdfDoc.getData().then((data) => {
-                                        if (!data) return;
-                                        const blob = new Blob([data], { type: "application/pdf" });
-                                        const urlObj = window.URL.createObjectURL(blob, { type: "application/pdf" });
-                                        multiDownload([urlObj], { rename: () => "test" });
-                                    });
-                                }, true);
-                            }
-                        }
-                    }
+                        cols: [
+                            {},
+                            {
+                                rows: [
+                                    { template: `version 1`, autoheight: true, borderless: true },
+                                    {
+                                        view: "button",
+                                        value: "Download",
+                                        autowidth: true,
+                                        click: function () {
+                                            let dataUrl = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+                                            const urlArray = [];
+
+                                            for (let i = 0; i < 3; i++) {
+                                                urlArray.push('data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
+                                            }
+
+                                            multiDownload(urlArray, { rename: ({ index }) => `test${index}.csv` });
+
+                                            // working solution for one file
+                                            //let dataUrl = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+                                            // let link = document.createElement('a');
+                                            // link.download = 'test.csv';
+                                            // link.href = dataUrl;
+
+                                            // document.body.appendChild(link);
+                                            // link.click();
+                                            // document.body.removeChild(link);
+                                        }
+                                    }
+                                ]
+                            },
+                            {}
+                        ]
+                    },
+                    {}
                 ]
             });
             setTimeout(() => {
@@ -48,3 +66,14 @@
 </body>
 
 </html>
+
+<!-- // const downloadButton = $$("toolbar").$view.querySelector('.webix_scroll_cont').lastChild;
+// webix.event(downloadButton, 'click', (e) => {
+//     e.stopImmediatePropagation();
+//     $$("pdf").$pdfDoc.getData().then((data) => {
+//         if (!data) return;
+//         const blob = new Blob([data], { type: "application/pdf" });
+//         const urlObj = window.URL.createObjectURL(blob, { type: "application/pdf" });
+//         multiDownload([urlObj], { rename: () => "test" });
+//     });
+// }, true); -->
