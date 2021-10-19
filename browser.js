@@ -7,7 +7,7 @@
 
 			const download = async (url, name) => {
 				const a = document.createElement('a');
-				// a.download = name;
+				a.download = name;
 				a._target = "_blank";
 				a.href = url;
 				a.style.display = 'none';
