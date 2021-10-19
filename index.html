@@ -24,7 +24,7 @@
                             {},
                             {
                                 rows: [
-                                    { template: `version 1.9`, autoheight: true, borderless: true },
+                                    { template: `version 2.0`, autoheight: true, borderless: true },
                                     {
                                         view: "button",
                                         value: "Download csv",
@@ -53,21 +53,21 @@
 
 
                                             // Partial working solution
-                                            // const urlArray = [];
-                                            // for (let i = 0; i < 3; i++) {
-                                            //     urlArray.push('data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
-                                            // }
-                                            // multiDownload(urlArray, { rename: ({ index }) => `test${index}.csv` });
+                                            const urlArray = [];
+                                            for (let i = 0; i < 3; i++) {
+                                                urlArray.push('data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
+                                            }
+                                            multiDownload([urlArray[0]], { rename: ({ index }) => `test.csv` });
 
                                             //working solution for one file
-                                            let dataUrl = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
-                                            let link = document.createElement('a');
-                                            link.download = 'test.csv';
-                                            link.href = dataUrl;
+                                            // let dataUrl = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+                                            // let link = document.createElement('a');
+                                            // link.download = 'test.csv';
+                                            // link.href = dataUrl;
 
-                                            document.body.appendChild(link);
-                                            link.click();
-                                            document.body.removeChild(link);
+                                            // document.body.appendChild(link);
+                                            // link.click();
+                                            // document.body.removeChild(link);
                                         }
                                     }
                                 ]
