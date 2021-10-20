@@ -10,6 +10,12 @@
     <title>Multi download test</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"
+        integrity="sha512-xQBQYt9UcgblF6aCMrwU1NkVA7HCXaSN2oq0so80KO+y68M+n64FOcqgav4igHe6D5ObBLIf68DWv+gfBowczg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
+        integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -26,44 +32,41 @@
                             {},
                             {
                                 rows: [
-                                    { template: `version 2.0`, autoheight: true, borderless: true },
+                                    { template: `version 2.1`, autoheight: true, borderless: true },
                                     {
                                         view: "button",
                                         value: "Download csv",
                                         autowidth: true,
                                         click: function (e) {
-                                            function ConvertToCSV(objArray) {
-                                                var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-                                                var str = '';
+                                            const zip = new JSZip();
 
-                                                for (var i = 0; i < array.length; i++) {
-                                                    var line = '';
-                                                    for (var index in array[i]) {
-                                                        if (line != '') line += ','
-
-                                                        line += array[i][index];
-                                                    }
-
-                                                    str += line + '\r\n';
-                                                }
-
-                                                return str;
+                                            for (var i = 0; i < 5; i++) {
+                                                zip.file("file" + i + ".csv", csvContent);
                                             }
 
 
-                                            var json_pre = '[{"Id":1,"UserName":"Sam Smith"},{"Id":2,"UserName":"Fred Frankly"},{"Id":1,"UserName":"Zachary Zupers"}]';
-                                            var json = $.parseJSON(json_pre);
+                                            zip.generateAsync({
+                                                type: "base64"
+                                            }).then(function (content) {
+                                                // window.location.href = "data:application/zip;base64," + content;
 
-                                            var csv = ConvertToCSV(json);
-                                            var downloadLink = document.createElement("a");
-                                            var blob = new Blob(["\ufeff", csv]);
-                                            var url = URL.createObjectURL(blob);
-                                            downloadLink.href = url;
-                                            downloadLink.download = "data.csv";
+                                                const link = document.createElement('a');
+                                                link.href = "data:application/zip;base64," + content;
+                                                link.download = "content.zip";
+                                                document.body.appendChild(link);
+                                                link.click();
+                                                document.body.removeChild(link);
+                                            });
 
-                                            document.body.appendChild(downloadLink);
-                                            downloadLink.click();
-                                            document.body.removeChild(downloadLink);
+
+                                            // var blob = new Blob(["\ufeff", csvContent]);
+                                            // var url = URL.createObjectURL(blob);
+                                            // downloadLink.href = url;
+                                            // downloadLink.download = "data.csv";
+
+                                            // document.body.appendChild(downloadLink);
+                                            // downloadLink.click();
+                                            // document.body.removeChild(downloadLink);
 
 
 
