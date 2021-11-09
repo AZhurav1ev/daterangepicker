@@ -3,122 +3,45 @@
 
 <head>
     <meta charset="UTF-8">
+    <title>Diffetence test</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"
+        charset="utf-8"></script>
+
     <script src="./codebase/webix.min.js"></script>
+    <!-- Need to import these scripts from from ./jsl folder -->
+    <script src="./jsl/jsl.format.js"></script>
+    <script src="./jsl//jsl.parser.js"></script>
+    <script src="./jsl/jdd.js"></script>
+
     <link rel="stylesheet" href="./codebase/webix.min.css">
-    <title>Multi download test</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"
-        integrity="sha512-xQBQYt9UcgblF6aCMrwU1NkVA7HCXaSN2oq0so80KO+y68M+n64FOcqgav4igHe6D5ObBLIf68DWv+gfBowczg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
-        integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="jdd.css">
+
+
 </head>
 
 <body>
-    <script src="browser.js"></script>
-    <script src="pdfdoc.js"></script>
-    <script src="csvData.js"></script>
     <script>
-        webix.ready(function () {
-            webix.ui({
-                rows: [
-                    {},
-                    {
-                        cols: [
-                            {},
-                            {
-                                rows: [
-                                    { template: `version 2.1`, autoheight: true, borderless: true },
-                                    {
-                                        view: "button",
-                                        value: "Download csv",
-                                        autowidth: true,
-                                        click: function (e) {
-                                            const zip = new JSZip();
-
-                                            for (var i = 0; i < 5; i++) {
-                                                zip.file("file" + i + ".csv", csvContent);
-                                            }
-
-
-                                            zip.generateAsync({
-                                                type: "base64"
-                                            }).then(function (content) {
-                                                // window.location.href = "data:application/zip;base64," + content;
-
-                                                const link = document.createElement('a');
-                                                link.href = "data:application/zip;base64," + content;
-                                                link.download = "content.zip";
-                                                document.body.appendChild(link);
-                                                link.click();
-                                                document.body.removeChild(link);
-                                            });
-
-
-                                            // var blob = new Blob(["\ufeff", csvContent]);
-                                            // var url = URL.createObjectURL(blob);
-                                            // downloadLink.href = url;
-                                            // downloadLink.download = "data.csv";
-
-                                            // document.body.appendChild(downloadLink);
-                                            // downloadLink.click();
-                                            // document.body.removeChild(downloadLink);
-
-
-
-                                            // Solution for apple developers
-                                            // const urlArray = [];
-                                            // for (let i = 0; i < 3; i++) {
-                                            //     urlArray.push('data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
-                                            // }
-                                            // urlArray.forEach((url, index) => {
-                                            //     var link = document.createElement("a");
-                                            //     link.download = `test${index}.csv`;
-                                            //     link.target = "_blank";
-                                            //     // Construct the URI 
-                                            //     link.href = url;
-                                            //     document.body.appendChild(link);
-                                            //     setTimeout(function () {
-                                            //         link.click();
-                                            //         // Cleanup the DOM 
-                                            //         // document.body.removeChild(link);
-                                            //     }, 500 * index);
-                                            // });
-
-
-
-
-                                            // Partial working solution
-                                            // e.preventDefault();
-                                            // const urlArray = [];
-                                            // for (let i = 0; i < 3; i++) {
-                                            //     urlArray.push('data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent));
-                                            // }
-                                            // multiDownload([urlArray], { rename: ({ index }) => `test.csv` });
-
-                                            //working solution for one file
-                                            // let dataUrl = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
-                                            // let link = document.createElement('a');
-                                            // link.download = 'test.csv';
-                                            // link.href = dataUrl;
-
-                                            // document.body.appendChild(link);
-                                            // link.click();
-                                            // document.body.removeChild(link);
-                                        }
-                                    }
-                                ]
-                            },
-                            {}
-                        ]
-                    },
-                    {}
-                ]
-            });
+        webix.ui({
+            rows: [
+                {},
+                {
+                    cols: [
+                        { gravity: 0.2 },
+                        {
+                            view: "iframe",
+                            id: "frame-body",
+                            src: "http://jsondiff.com/?left=http://jsondiff.com/one.json&right=http://jsondiff.com/two.json",
+                            width: 1300,
+                            height: 800
+                        },
+                        { gravity: 0.2 }
+                    ]
+                },
+                {}
+            ]
         });
     </script>
 </body>
